@@ -98,7 +98,7 @@ header("location:login.php");
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Ask a Question</h2>
-                <form action="demo_form.asp">
+                <form action="askquestion.php" method="post">
   
  <b> <i>Your Question : </i></b>
  </br></br>
@@ -107,14 +107,27 @@ header("location:login.php");
 		<input type="image" name="submit" src="ask.png" border="0" alt="Submit">
 </form>
 				
-			</div>
-        </div>
+			
+       </br>
+</br>	   
+		OR
+		<form action="upload1.php" method="post" enctype="multipart/form-data">
+	
+  Select file:     <input type="file" name="fileToUpload" id="fileToUpload">
+    	<table> <tr>   
+<input type="image" name="submit" src="ask.png" border="0" alt="Submit">
+</tr></table>
+   	</form>
+</div> </div>
+		
     </section>
 
 
 
-    
-
+    <?php 
+	$nam=$_SESSION["id"];
+	 
+	?>
     <!-- Footer -->
     <footer>
         <div class="container text-center">
@@ -134,6 +147,45 @@ header("location:login.php");
     <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
     
     <script src="js/grayscale.js"></script>
+<?php 
+$quest="";
+
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "calteta";
+
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+
+
+if($_SERVER["REQUEST_METHOD"]=="POST")
+{
+$quest=$_POST["quest"];
+
+
+$sql ="INSERT INTO questions(question,asked_by) VALUES('$quest',$nam)";
+$sql2="INSERT INTO questions_status (current_status) VALUES ('$a')";
+
+if ($conn->query($sql) === TRUE AND $conn->query($sql2)===TRUE )
+{
+echo "Successfully Asked ! ";
+}
+
+} 
+
+
+$conn->close(); ?>
+
+
+
 
 </body>
 

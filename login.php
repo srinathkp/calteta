@@ -28,7 +28,7 @@ Log in &nbsp;|&nbsp;Calteta
 <br />
 <br /><br /><br />
 <center><h3> 
-<form method="post"><table><tr><td>
+<form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="post"><table><tr><td>
 <b>Username:</b></td>
 <td>
 <input type="text" name="id1" > </td>
@@ -64,7 +64,7 @@ $myusername=$mypassword=$mypassword1="";
 $host="localhost"; // Host name 
 $username="root"; // Mysql username 
 $password=""; // Mysql password 
-$db_name="id"; // Database name 
+$db_name="calteta"; // Database name 
 
 
 
@@ -80,7 +80,9 @@ $mypassword=$_POST['password1'];
 $myusername = stripslashes($myusername);
 $mypassword1 = sha1($mypassword);
 
-$sql="SELECT * FROM idpwd WHERE username='$myusername' and Password='$mypassword1'";
+
+
+$sql="SELECT * FROM users WHERE username='$myusername' and password='$mypassword1'";
 $count=0;
 
 if($username!=NULL){$m=mysqli_query($conn,$sql) or die("error");
@@ -88,7 +90,10 @@ $count=mysqli_num_rows($m);}
 if(!empty($myusername)){
 if($count==1){
 session_start();
-$_SESSION["id"]=$myusername;
+$idque=mysqli_query($conn,"SELECT id FROM users WHERE username='$myusername'");
+$idarr=mysqli_fetch_array($idque,MYSQLI_ASSOC);
+$id=$idarr["id"];
+$_SESSION["id"]=$id;
 header("location:askquestion.php");
 }
 else {
